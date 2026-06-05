@@ -1,0 +1,384 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>A股四家公司投资体检 Dashboard</title>
+  <style>
+    :root {
+      --ink: #18212f;
+      --muted: #687386;
+      --line: #d9dee7;
+      --paper: #ffffff;
+      --bg: #f5f7fb;
+      --blue: #2764c6;
+      --green: #15865d;
+      --amber: #b97812;
+      --red: #be3d35;
+      --purple: #7952b3;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
+      line-height: 1.55;
+    }
+    main {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 36px 22px 56px;
+    }
+    header {
+      margin-bottom: 24px;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 20px;
+    }
+    h1 {
+      margin: 0 0 10px;
+      font-size: 34px;
+      letter-spacing: 0;
+    }
+    h2 {
+      margin: 34px 0 14px;
+      font-size: 22px;
+      letter-spacing: 0;
+    }
+    h3 {
+      margin: 0 0 10px;
+      font-size: 17px;
+    }
+    p {
+      margin: 0 0 10px;
+      color: var(--muted);
+    }
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .pill {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 5px 10px;
+      background: #fff;
+    }
+    .summary {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin: 22px 0 28px;
+    }
+    .card {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 16px;
+      min-height: 120px;
+    }
+    .label {
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+    }
+    .value {
+      margin-top: 7px;
+      font-size: 22px;
+      font-weight: 720;
+    }
+    .note {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+    .panel {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 16px;
+      overflow: hidden;
+    }
+    svg {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+    .axis { stroke: #9aa5b5; stroke-width: 1; }
+    .gridline { stroke: #e8ecf2; stroke-width: 1; }
+    .tick, .legend, .chart-label { fill: #566174; font-size: 11px; }
+    .chart-title { fill: var(--ink); font-size: 15px; font-weight: 700; }
+    .table-wrap {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      overflow-x: auto;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 980px;
+      font-size: 13px;
+    }
+    th, td {
+      padding: 10px 11px;
+      border-bottom: 1px solid #e9edf3;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      background: #eef2f7;
+      color: #344054;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    td.num { text-align: right; font-variant-numeric: tabular-nums; }
+    .sources {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 16px 18px;
+      margin-top: 26px;
+    }
+    .sources ol {
+      margin: 8px 0 0;
+      padding-left: 22px;
+    }
+    .sources li {
+      margin: 7px 0;
+      color: var(--muted);
+    }
+    a { color: #2057aa; }
+    .small {
+      font-size: 12px;
+      color: var(--muted);
+    }
+    @media (max-width: 860px) {
+      main { padding: 24px 14px 40px; }
+      h1 { font-size: 27px; }
+      .summary, .grid { grid-template-columns: 1fr; }
+      .card { min-height: 0; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <h1>A股四家公司投资体检 Dashboard</h1>
+      <p>国电南瑞、柯力传感、双环传动、光启技术的财务增长、估值和持有/加仓纪律对比。</p>
+      <div class="meta">
+        <span class="pill">Generated at: 2026-06-05</span>
+        <span class="pill">Artifact URL: https://mcp-server-datasciencewidgets-77fed6fee21834fa.web-sandbox.oaiusercontent.com/?app=skybridge</span>
+        <span class="pill">口径：公开财报、公告摘要与近期估值快照</span>
+      </div>
+    </header>
+
+    <section>
+      <h2>一眼结论</h2>
+      <div class="summary">
+        <div class="card">
+          <div class="label">最稳健持有</div>
+          <div class="value">国电南瑞</div>
+          <div class="note">低估值、高现金流，适合用回调和业绩确认做加仓纪律。</div>
+        </div>
+        <div class="card">
+          <div class="label">成长/确定性平衡</div>
+          <div class="value">双环传动</div>
+          <div class="note">主业更扎实，但短期扣非利润和车企压价需要跟踪。</div>
+        </div>
+        <div class="card">
+          <div class="label">机器人弹性</div>
+          <div class="value">柯力传感</div>
+          <div class="note">扣非主业在增长，估值依赖机器人传感器收入兑现。</div>
+        </div>
+        <div class="card">
+          <div class="label">最高估值弹性</div>
+          <div class="value">光启技术</div>
+          <div class="note">超材料和低空经济叙事强，但 PE/PB 压力最大。</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="grid" aria-label="Charts">
+      <article class="panel">
+        <h3>估值对比：PE 与 PB</h3>
+        <svg viewBox="0 0 540 320" role="img" aria-label="PE 与 PB grouped bar chart">
+          <line class="axis" x1="56" y1="256" x2="510" y2="256"></line>
+          <line class="axis" x1="56" y1="34" x2="56" y2="256"></line>
+          <line class="gridline" x1="56" y1="204" x2="510" y2="204"></line>
+          <line class="gridline" x1="56" y1="151" x2="510" y2="151"></line>
+          <line class="gridline" x1="56" y1="99" x2="510" y2="99"></line>
+          <text class="tick" x="24" y="259">0</text>
+          <text class="tick" x="18" y="207">40</text>
+          <text class="tick" x="18" y="154">80</text>
+          <text class="tick" x="12" y="102">120</text>
+          <rect x="88" y="216" width="24" height="40" fill="var(--blue)"></rect>
+          <rect x="114" y="250" width="24" height="6" fill="var(--green)"></rect>
+          <rect x="196" y="155" width="24" height="101" fill="var(--blue)"></rect>
+          <rect x="222" y="244" width="24" height="12" fill="var(--green)"></rect>
+          <rect x="304" y="206" width="24" height="50" fill="var(--blue)"></rect>
+          <rect x="330" y="250" width="24" height="6" fill="var(--green)"></rect>
+          <rect x="412" y="33" width="24" height="223" fill="var(--blue)"></rect>
+          <rect x="438" y="239" width="24" height="17" fill="var(--green)"></rect>
+          <text class="chart-label" x="78" y="278">国电南瑞</text>
+          <text class="chart-label" x="188" y="278">柯力传感</text>
+          <text class="chart-label" x="294" y="278">双环传动</text>
+          <text class="chart-label" x="404" y="278">光启技术</text>
+          <rect x="354" y="14" width="12" height="12" fill="var(--blue)"></rect>
+          <text class="legend" x="372" y="25">PE</text>
+          <rect x="414" y="14" width="12" height="12" fill="var(--green)"></rect>
+          <text class="legend" x="432" y="25">PB</text>
+        </svg>
+      </article>
+
+      <article class="panel">
+        <h3>2025 年营收与归母净利润增速</h3>
+        <svg viewBox="0 0 540 320" role="img" aria-label="2025 revenue and net profit growth grouped bar chart">
+          <line class="axis" x1="56" y1="256" x2="510" y2="256"></line>
+          <line class="axis" x1="56" y1="34" x2="56" y2="256"></line>
+          <line class="gridline" x1="56" y1="196" x2="510" y2="196"></line>
+          <line class="gridline" x1="56" y1="137" x2="510" y2="137"></line>
+          <line class="gridline" x1="56" y1="78" x2="510" y2="78"></line>
+          <text class="tick" x="24" y="259">0%</text>
+          <text class="tick" x="18" y="199">10</text>
+          <text class="tick" x="18" y="140">20</text>
+          <text class="tick" x="18" y="81">30</text>
+          <rect x="88" y="170" width="24" height="86" fill="var(--blue)"></rect>
+          <rect x="114" y="204" width="24" height="52" fill="var(--amber)"></rect>
+          <rect x="196" y="136" width="24" height="120" fill="var(--blue)"></rect>
+          <rect x="222" y="75" width="24" height="181" fill="var(--amber)"></rect>
+          <rect x="304" y="234" width="24" height="22" fill="var(--blue)"></rect>
+          <rect x="330" y="119" width="24" height="137" fill="var(--amber)"></rect>
+          <rect x="412" y="71" width="24" height="185" fill="var(--blue)"></rect>
+          <rect x="438" y="224" width="24" height="32" fill="var(--amber)"></rect>
+          <text class="chart-label" x="78" y="278">国电南瑞</text>
+          <text class="chart-label" x="188" y="278">柯力传感</text>
+          <text class="chart-label" x="294" y="278">双环传动</text>
+          <text class="chart-label" x="404" y="278">光启技术</text>
+          <rect x="318" y="14" width="12" height="12" fill="var(--blue)"></rect>
+          <text class="legend" x="336" y="25">营收 YoY</text>
+          <rect x="414" y="14" width="12" height="12" fill="var(--amber)"></rect>
+          <text class="legend" x="432" y="25">归母 YoY</text>
+        </svg>
+      </article>
+
+      <article class="panel">
+        <h3>2026Q1 营收与扣非利润增速</h3>
+        <svg viewBox="0 0 540 330" role="img" aria-label="Q1 revenue and deducted profit growth">
+          <line class="axis" x1="56" y1="256" x2="510" y2="256"></line>
+          <line class="axis" x1="56" y1="44" x2="56" y2="286"></line>
+          <line class="gridline" x1="56" y1="206" x2="510" y2="206"></line>
+          <line class="gridline" x1="56" y1="156" x2="510" y2="156"></line>
+          <line class="gridline" x1="56" y1="106" x2="510" y2="106"></line>
+          <text class="tick" x="17" y="259">0%</text>
+          <text class="tick" x="12" y="209">10</text>
+          <text class="tick" x="12" y="159">20</text>
+          <text class="tick" x="12" y="109">30</text>
+          <rect x="88" y="218" width="24" height="38" fill="var(--blue)"></rect>
+          <rect x="114" y="256" width="24" height="0" fill="var(--green)"></rect>
+          <rect x="196" y="189" width="24" height="67" fill="var(--blue)"></rect>
+          <rect x="222" y="152" width="24" height="104" fill="var(--green)"></rect>
+          <rect x="304" y="249" width="24" height="7" fill="var(--blue)"></rect>
+          <rect x="330" y="256" width="24" height="20" fill="var(--red)"></rect>
+          <rect x="412" y="55" width="24" height="201" fill="var(--blue)"></rect>
+          <rect x="438" y="160" width="24" height="96" fill="var(--green)"></rect>
+          <text class="chart-label" x="78" y="306">国电南瑞</text>
+          <text class="chart-label" x="188" y="306">柯力传感</text>
+          <text class="chart-label" x="294" y="306">双环传动</text>
+          <text class="chart-label" x="404" y="306">光启技术</text>
+          <rect x="300" y="14" width="12" height="12" fill="var(--blue)"></rect>
+          <text class="legend" x="318" y="25">营收 YoY</text>
+          <rect x="396" y="14" width="12" height="12" fill="var(--green)"></rect>
+          <text class="legend" x="414" y="25">扣非 YoY</text>
+        </svg>
+        <p class="small">注：国电南瑞 Q1 扣非同比在本次汇总源中未填入，图中不展示该柱。</p>
+      </article>
+
+      <article class="panel">
+        <h3>市值与 PE 关系</h3>
+        <svg viewBox="0 0 540 330" role="img" aria-label="Market cap and PE scatter chart">
+          <line class="axis" x1="58" y1="264" x2="510" y2="264"></line>
+          <line class="axis" x1="58" y1="34" x2="58" y2="264"></line>
+          <line class="gridline" x1="58" y1="207" x2="510" y2="207"></line>
+          <line class="gridline" x1="58" y1="149" x2="510" y2="149"></line>
+          <line class="gridline" x1="58" y1="92" x2="510" y2="92"></line>
+          <text class="tick" x="20" y="267">0 PE</text>
+          <text class="tick" x="14" y="210">40</text>
+          <text class="tick" x="14" y="152">80</text>
+          <text class="tick" x="8" y="95">120</text>
+          <text class="tick" x="58" y="292">0</text>
+          <text class="tick" x="278" y="292">1000亿</text>
+          <text class="tick" x="470" y="292">2000亿</text>
+          <circle cx="490" cy="231" r="8" fill="var(--blue)"></circle>
+          <text class="chart-label" x="370" y="227">国电南瑞</text>
+          <circle cx="100" cy="181" r="8" fill="var(--green)"></circle>
+          <text class="chart-label" x="110" y="181">柯力传感</text>
+          <circle cx="140" cy="223" r="8" fill="var(--amber)"></circle>
+          <text class="chart-label" x="150" y="223">双环传动</text>
+          <circle cx="266" cy="49" r="8" fill="var(--red)"></circle>
+          <text class="chart-label" x="276" y="50">光启技术</text>
+          <text class="small" x="80" y="315">横轴：市值；纵轴：PE。越靠上，估值压力越大。</text>
+        </svg>
+      </article>
+    </section>
+
+    <section>
+      <h2>财务与估值汇总</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>公司</th><th>代码</th><th>2025营收</th><th>营收YoY</th><th>2025归母净利</th><th>归母YoY</th><th>2025扣非净利</th><th>26Q1营收</th><th>26Q1归母</th><th>PE</th><th>PB</th><th>股息率</th><th>市值</th><th>操作观点</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>国电南瑞</td><td>600406.SH</td><td class="num">662.29亿</td><td class="num">14.53%</td><td class="num">82.79亿</td><td class="num">8.79%</td><td class="num">79.83亿</td><td class="num">95.64亿</td><td class="num">7.21亿</td><td class="num">22.98x</td><td class="num">3.57x</td><td class="num">2.61%</td><td class="num">1911.56亿</td><td>继续持有，回调或业绩确认后加</td></tr>
+            <tr><td>柯力传感</td><td>603662.SH</td><td class="num">15.58亿</td><td class="num">20.33%</td><td class="num">3.41亿</td><td class="num">30.73%</td><td class="num">2.14亿</td><td class="num">3.58亿</td><td class="num">0.411亿</td><td class="num">57.52x</td><td class="num">6.77x</td><td class="num">0.42%</td><td class="num">186.33亿</td><td>可持有，追加需等机器人收入兑现</td></tr>
+            <tr><td>双环传动</td><td>002472.SZ</td><td class="num">91.12亿</td><td class="num">3.77%</td><td class="num">12.62亿</td><td class="num">23.21%</td><td class="num">12.04亿</td><td class="num">20.95亿</td><td class="num">2.84亿</td><td class="num">28.45x</td><td class="num">3.50x</td><td class="num">1.08%</td><td class="num">361.16亿</td><td>继续持有，可小比例分批加</td></tr>
+            <tr><td>光启技术</td><td>002625.SZ</td><td class="num">20.46亿</td><td class="num">31.32%</td><td class="num">6.87亿</td><td class="num">5.40%</td><td class="num">7.01亿</td><td class="num">5.22亿</td><td class="num">1.76亿</td><td class="num">127.35x</td><td class="num">9.62x</td><td class="num">0.00%</td><td class="num">917.85亿</td><td>可跟踪/持有，不宜高位重仓加</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section>
+      <h2>持有/加仓纪律</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>公司</th><th>持有判断</th><th>加仓纪律</th><th>重点监控</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>国电南瑞</td><td>支持继续持有</td><td>适合回调或 PE 约 20 倍以内分批加</td><td>电网投资、毛利率、现金流、订单转化</td></tr>
+            <tr><td>柯力传感</td><td>可以持有但需验证成长</td><td>等机器人传感器收入、扣非利润继续兑现</td><td>扣非利润、六维力/触觉订单、毛利率、公允价值扰动</td></tr>
+            <tr><td>双环传动</td><td>支持继续持有</td><td>可小比例分批加，优先等 25 倍 PE 附近或利润率确认</td><td>车企压价、扣非利润、现金流、机器人减速器订单</td></tr>
+            <tr><td>光启技术</td><td>可持有/跟踪但控制仓位</td><td>不宜高位重仓，等订单与现金流验证或大回调</td><td>超材料批产、低空经济订单、应收存货、现金流</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="sources">
+      <h2>Source Details</h2>
+      <p>本静态 HTML 由 Data Analytics dashboard 内容导出，已去除交互顶栏、刷新、导出、筛选和应用内控件。估值字段为近期公开行情/估值快照，不是实时盘中报价。</p>
+      <ol>
+        <li><a href="https://static.cninfo.com.cn/finalpage/2026-04-30/1225257886.PDF">国电南瑞 2025 年报、2026 一季报</a></li>
+        <li><a href="https://money.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?id=12209189&stockid=603662">柯力传感 2025 年报、2026 一季报公开公告摘要</a></li>
+        <li><a href="https://money.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?id=12172151&stockid=002472">双环传动 2025 年报、2026 一季报公开公告摘要</a></li>
+        <li><a href="https://disc.static.szse.cn/download/disc/disk03/finalpage/2026-04-28/e5328727-18aa-4a2a-84e4-f9dff4295c47.PDF">光启技术 2025 年报、2026 一季报</a></li>
+        <li><a href="https://www.lixinger.com">理杏仁及公开行情聚合页估值快照</a></li>
+      </ol>
+      <p class="small">免责声明：本页面是研究辅助材料，不构成个性化投资建议、买卖建议或收益承诺。</p>
+    </section>
+  </main>
+</body>
+</html>
