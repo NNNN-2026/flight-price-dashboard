@@ -1,260 +1,76 @@
 <!doctype html>
 <html lang="zh-CN">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>个人研究与观察台</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>上海到深圳机票价格监控</title>
   <style>
-    :root {
-      color-scheme: light;
-      --ink: #17202f;
-      --muted: #657287;
-      --line: #d9dee8;
-      --paper: #ffffff;
-      --bg: #f4f7fb;
-      --blue: #245cc7;
-      --green: #147a62;
-      --amber: #a76b16;
-      --shadow: 0 18px 42px rgba(23, 32, 47, 0.08);
-    }
+    :root { color-scheme: light; --ink:#17202a; --muted:#667085; --line:#d9dee7; --blue:#244d8f; --green:#12715b; --amber:#916d13; --bg:#f6f7f9; }
     * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      min-height: 100vh;
-      background: var(--bg);
-      color: var(--ink);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
-      line-height: 1.55;
-    }
-    .shell {
-      max-width: 1120px;
-      margin: 0 auto;
-      padding: 44px 22px 54px;
-    }
-    header {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) auto;
-      gap: 22px;
-      align-items: end;
-      padding-bottom: 24px;
-      border-bottom: 1px solid var(--line);
-    }
-    .eyebrow {
-      margin: 0 0 10px;
-      color: var(--blue);
-      font-size: 13px;
-      font-weight: 700;
-      letter-spacing: .06em;
-      text-transform: uppercase;
-    }
-    h1 {
-      margin: 0;
-      font-size: 42px;
-      letter-spacing: 0;
-      line-height: 1.1;
-    }
-    .lead {
-      max-width: 760px;
-      margin: 16px 0 0;
-      color: var(--muted);
-      font-size: 16px;
-    }
-    .status {
-      min-width: 240px;
-      background: var(--paper);
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      padding: 14px 16px;
-      box-shadow: var(--shadow);
-    }
-    .status .label {
-      color: var(--muted);
-      font-size: 12px;
-      margin-bottom: 5px;
-    }
-    .status .value {
-      font-size: 18px;
-      font-weight: 760;
-    }
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 18px;
-      margin-top: 28px;
-    }
-    .card {
-      display: flex;
-      min-height: 260px;
-      flex-direction: column;
-      justify-content: space-between;
-      background: var(--paper);
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      padding: 22px;
-      box-shadow: var(--shadow);
-      text-decoration: none;
-      color: inherit;
-      transition: transform .16s ease, border-color .16s ease, box-shadow .16s ease;
-    }
-    .card:hover {
-      transform: translateY(-2px);
-      border-color: #b8c5d8;
-      box-shadow: 0 22px 52px rgba(23, 32, 47, 0.12);
-    }
-    .card-top {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 14px;
-    }
-    h2 {
-      margin: 0 0 10px;
-      font-size: 26px;
-      letter-spacing: 0;
-    }
-    .desc {
-      margin: 0;
-      color: var(--muted);
-      font-size: 15px;
-    }
-    .icon {
-      display: grid;
-      place-items: center;
-      width: 46px;
-      height: 46px;
-      border-radius: 8px;
-      background: #edf3ff;
-      color: var(--blue);
-      flex: 0 0 auto;
-    }
-    .icon.green {
-      background: #eaf7f2;
-      color: var(--green);
-    }
-    .metrics {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 10px;
-      margin: 22px 0;
-    }
-    .metric {
-      border: 1px solid #e7ebf2;
-      border-radius: 8px;
-      padding: 10px;
-      background: #fbfcfe;
-    }
-    .metric span {
-      display: block;
-      color: var(--muted);
-      font-size: 12px;
-    }
-    .metric strong {
-      display: block;
-      margin-top: 3px;
-      font-size: 16px;
-    }
-    .cta {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      width: fit-content;
-      border-radius: 8px;
-      padding: 10px 12px;
-      background: #17202f;
-      color: #fff;
-      font-weight: 700;
-      font-size: 14px;
-    }
-    .card:nth-child(2) .cta { background: var(--green); }
-    .arrow {
-      font-size: 18px;
-      line-height: 1;
-    }
-    footer {
-      margin-top: 30px;
-      padding-top: 18px;
-      border-top: 1px solid var(--line);
-      color: var(--muted);
-      font-size: 13px;
-    }
-    @media (max-width: 820px) {
-      .shell { padding: 30px 14px 42px; }
-      header { grid-template-columns: 1fr; }
-      h1 { font-size: 32px; }
-      .grid { grid-template-columns: 1fr; }
-      .metrics { grid-template-columns: 1fr; }
-      .card { min-height: 0; }
-      .status { min-width: 0; }
-    }
+    body { margin: 0; font-family: Arial, "PingFang SC", "Microsoft YaHei", sans-serif; color: var(--ink); background: var(--bg); }
+    header { background: #ffffff; border-bottom: 1px solid var(--line); padding: 20px 28px 16px; }
+    h1 { margin: 0 0 8px; font-size: 24px; font-weight: 700; }
+    .sub { color: var(--muted); font-size: 14px; line-height: 1.6; }
+    main { padding: 22px 28px 34px; max-width: 1440px; margin: 0 auto; }
+    .metrics { display: grid; grid-template-columns: repeat(4, minmax(180px, 1fr)); gap: 12px; margin-bottom: 18px; }
+    .metric { background: #fff; border: 1px solid var(--line); border-radius: 8px; padding: 14px 16px; min-height: 92px; }
+    .metric .label { color: var(--muted); font-size: 13px; margin-bottom: 8px; }
+    .metric .value { font-size: 23px; font-weight: 700; }
+    .metric .note { color: var(--muted); font-size: 12px; margin-top: 8px; line-height: 1.35; }
+    section { margin-top: 18px; background: #fff; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+    h2 { margin: 0; padding: 13px 16px; font-size: 16px; background: #f0f3f7; border-bottom: 1px solid var(--line); }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th, td { padding: 10px 12px; border-bottom: 1px solid #edf0f4; text-align: left; vertical-align: top; }
+    th { color: #344054; background: #fafbfc; font-weight: 700; white-space: nowrap; }
+    tr:last-child td { border-bottom: 0; }
+    .muted { color: var(--muted); }
+    .ok { color: var(--green); font-weight: 700; }
+    .warn { color: var(--amber); font-weight: 700; }
+    @media (max-width: 900px) { .metrics { grid-template-columns: 1fr 1fr; } main, header { padding-left: 16px; padding-right: 16px; } table { min-width: 760px; } section { overflow-x: auto; } }
   </style>
 </head>
 <body>
-  <main class="shell">
-    <header>
-      <div>
-        <p class="eyebrow">Personal Research Hub</p>
-        <h1>个人研究与观察台</h1>
-        <p class="lead">把需要定期回看的观察项目收在一个入口里：旅行价格监控、A 股投资体检，以及后续可以继续追加的研究页面。</p>
-      </div>
-      <aside class="status" aria-label="站点状态">
-        <div class="label">最近更新</div>
-        <div class="value">2026-06-05</div>
-        <div class="label" style="margin-top:8px;">当前页面</div>
-        <div class="value">2 个观察入口</div>
-      </aside>
-    </header>
-
-    <section class="grid" aria-label="站点入口">
-      <a class="card" href="flight-monitor.html">
-        <div>
-          <div class="card-top">
-            <div>
-              <h2>上海到深圳机票监控</h2>
-              <p class="desc">保留原来的机票观察信息，包含携程/同程最近采集、历史最低价和低价时段统计。</p>
-            </div>
-            <div class="icon" aria-hidden="true">
-              <svg width="25" height="25" viewBox="0 0 24 24" fill="none">
-                <path d="M3 11.5h18M7 8l-4 3.5L7 15m10-7 4 3.5-4 3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M9 18h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-              </svg>
-            </div>
-          </div>
-          <div class="metrics">
-            <div class="metric"><span>当前最低</span><strong>¥292</strong></div>
-            <div class="metric"><span>成功记录</span><strong>39</strong></div>
-            <div class="metric"><span>航线</span><strong>沪 → 深</strong></div>
-          </div>
-        </div>
-        <div class="cta">打开机票观察 <span class="arrow">›</span></div>
-      </a>
-
-      <a class="card" href="investment-dashboard.html">
-        <div>
-          <div class="card-top">
-            <div>
-              <h2>A股四家公司投资体检</h2>
-              <p class="desc">汇总国电南瑞、柯力传感、双环传动、光启技术的财务、估值、PE/PB 和持有/加仓纪律。</p>
-            </div>
-            <div class="icon green" aria-hidden="true">
-              <svg width="25" height="25" viewBox="0 0 24 24" fill="none">
-                <path d="M4 19V5m0 14h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                <path d="m7 15 4-4 3 3 5-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </div>
-          </div>
-          <div class="metrics">
-            <div class="metric"><span>公司数</span><strong>4</strong></div>
-            <div class="metric"><span>最低 PE</span><strong>22.98x</strong></div>
-            <div class="metric"><span>最高 PE</span><strong>127.35x</strong></div>
-          </div>
-        </div>
-        <div class="cta">打开投资看板 <span class="arrow">›</span></div>
-      </a>
+  <header>
+    <h1>上海到深圳机票价格监控</h1>
+    <div class="sub">2026-06-23 19:00-21:00、2026-06-24 07:30-11:00｜浦东/虹桥 → 深圳宝安｜直飞｜成人 1 人｜携程、同程｜页面生成：2026/6/6 08:53:00</div>
+  </header>
+  <main>
+    <div class="metrics">
+      <div class="metric"><div class="label">当前最低总价</div><div class="value">¥400</div><div class="note">携程 ZH9526 19:00</div></div>
+      <div class="metric"><div class="label">成功价格记录</div><div class="value">3</div><div class="note">仅包含直飞、状态 ok、目标日期与时间窗口内起飞的报价</div></div>
+      <div class="metric"><div class="label">限制/需登录记录</div><div class="value">1</div><div class="note">仅统计携程、同程；不会纳入最低价统计</div></div>
+      <div class="metric"><div class="label">最低采集时段</div><div class="value">08:00-08:59</div><div class="note">2026-06-06 08:45:29 PDT</div></div>
+    </div>
+    <section>
+      <h2>携程/同程最近一次采集</h2>
+      <table><thead><tr><th>窗口</th><th>网站</th><th>采集时间</th><th>状态</th><th>最低/记录总价</th><th>航班</th><th>起飞</th><th>备注</th></tr></thead><tbody>
+        <tr><td>2026-06-23 晚上 19:00-21:00</td><td>同程</td><td>2026-06-06 08:45:29 PDT</td><td>ok</td><td>¥400</td><td>深圳航空 ZH9526</td><td>19:00</td><td>2026-06-23 19:00-21:00口径；刷新已登录Chrome结果页可见，深圳航空ZH9526浦东T2至宝安T3，¥400起</td></tr>
+<tr><td>2026-06-23 晚上 19:00-21:00</td><td>携程</td><td>2026-06-06 08:45:29 PDT</td><td>ok</td><td>¥400</td><td>深圳航空 ZH9526</td><td>19:00</td><td>2026-06-23 19:00-21:00口径；刷新已登录Chrome结果页可见，深圳航空ZH9526浦东T2至宝安T3，¥400起</td></tr>
+<tr><td>2026-06-24 早上 07:30-11:00</td><td>同程</td><td>2026-06-06 08:45:29 PDT</td><td>ok</td><td>¥613</td><td>春秋航空 9C7519</td><td>09:35</td><td>2026-06-24 07:30-11:00口径；刷新已登录Chrome结果页可见，春秋航空9C7519虹桥T1至宝安T3，¥613起</td></tr>
+<tr><td>2026-06-24 早上 07:30-11:00</td><td>携程</td><td>2026-06-06 08:45:29 PDT</td><td>error</td><td></td><td></td><td></td><td>2026-06-24 07:30-11:00口径；刷新已登录Chrome结果页后未返回可见的07:30-11:00航班列表，仅显示晚间低价航班，未记录价格</td></tr>
+      </tbody></table>
     </section>
-
-    <footer>
-      页面为静态站点入口。投资内容仅作研究辅助，不构成个性化投资建议；机票价格以实际下单页面为准。
-    </footer>
+    <section>
+      <h2>两个行程窗口当前最低价</h2>
+      <table><thead><tr><th>窗口</th><th>当前最低价</th><th>网站</th><th>采集时间</th><th>航班</th><th>起飞</th><th>舱位/余票</th></tr></thead><tbody>
+        <tr><td>2026-06-23 晚上 19:00-21:00</td><td>¥400</td><td>携程</td><td>2026-06-06 08:45:29 PDT</td><td>深圳航空 ZH9526</td><td>19:00</td><td>经济舱1.7折</td></tr>
+<tr><td>2026-06-24 早上 07:30-11:00</td><td>¥613</td><td>同程</td><td>2026-06-06 08:45:29 PDT</td><td>春秋航空 9C7519</td><td>09:35</td><td>2.6折经济舱</td></tr>
+      </tbody></table>
+    </section>
+    <section>
+      <h2>携程/同程历史最低价</h2>
+      <table><thead><tr><th>排名</th><th>窗口</th><th>网站</th><th>总价</th><th>采集时间</th><th>航班</th><th>起飞</th><th>舱位/余票</th></tr></thead><tbody>
+        <tr><td>1</td><td>2026-06-23 晚上 19:00-21:00</td><td>携程</td><td>¥400</td><td>2026-06-06 08:45:29 PDT</td><td>深圳航空 ZH9526</td><td>19:00</td><td>经济舱1.7折</td></tr>
+<tr><td>2</td><td>2026-06-23 晚上 19:00-21:00</td><td>同程</td><td>¥400</td><td>2026-06-06 08:45:29 PDT</td><td>深圳航空 ZH9526</td><td>19:00</td><td>1.7折经济舱</td></tr>
+<tr><td>3</td><td>2026-06-24 早上 07:30-11:00</td><td>同程</td><td>¥613</td><td>2026-06-06 08:45:29 PDT</td><td>春秋航空 9C7519</td><td>09:35</td><td>2.6折经济舱</td></tr>
+      </tbody></table>
+    </section>
+    <section>
+      <h2>一天内低价时段统计</h2>
+      <table><thead><tr><th>采集时段</th><th>成功记录数</th><th>该时段最低价</th><th>网站</th><th>采集时间</th><th>航班</th></tr></thead><tbody>
+        <tr><td>08:00-08:59</td><td>3</td><td>¥400</td><td>携程</td><td>2026-06-06 08:45:29 PDT</td><td>深圳航空 ZH9526</td></tr>
+      </tbody></table>
+    </section>
   </main>
 </body>
 </html>
